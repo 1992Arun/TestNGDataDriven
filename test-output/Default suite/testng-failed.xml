@@ -7,7 +7,7 @@
         <methods>
           <include name="beforeClass"/>
           <include name="beforeMethod"/>
-          <include name="search" invocation-numbers="0"/>
+          <include name="test2" invocation-numbers="0 1 2"/>
           <include name="afterClass"/>
           <include name="afterMethod"/>
         </methods>

@@ -105,4 +105,48 @@ public class ReadXL {
 		return value;
 
 	}
+	
+	
+	
+	@DataProvider(name="booking")
+	public static String[][] read1() throws IOException{
+
+		File f = new File("C:\\Users\\Arun\\Desktop\\Datadriven\\booking.xlsx");
+		
+		FileInputStream is = new FileInputStream(f);
+
+		wb = new XSSFWorkbook(is);
+
+		sheet = wb.getSheet("Search");
+
+		int rowno = sheet.getPhysicalNumberOfRows();
+
+		short columnno = wb.getSheet("Search").getRow(0).getLastCellNum();
+
+		String data[][] = new String[rowno-1][columnno];
+
+		for(int i=1; i<rowno; i++) {
+
+			Row row = sheet.getRow(i);
+
+			for(int j=0; j<columnno; j++ ) {
+
+				data[i-1][j]= cell(i,j);
+
+             
+			}
+
+		}
+			
+		return data;	
+
+
+
+
+
+	}
+
+	
+	
+	
 }
