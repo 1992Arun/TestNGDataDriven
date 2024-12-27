@@ -72,7 +72,7 @@ public class ReadXL {
 
 		Cell cell = row2.getCell(column);
 
-		int cellType = cell.getCellType();
+		int cellType = cell.getCellType();  
 
 		if(cellType==1) {
 

@@ -6,11 +6,18 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -55,35 +62,37 @@ public class BaseClass {
 
 
 	}
-	
-	
+
+
 	public static String getText(WebElement e){
-		
-		
+
+
 		String text = e.getText();
-		
+
+
+
 		return text;
-		
-		
+
+
 	}
-	
+
 	public static int webStringlength(WebElement e){
-		
+
 		String attribute = e.getAttribute("value");
-		
-		
+
+
 		return attribute.length();
 	}
-	
+
 	public static String printText(WebElement e){
-		
+
 		String text = e.getAttribute("value");
-		
+
 		System.out.println(text);
-		
+
 		return text;
 	}
-	
+
 
 	public static String getCurrectURL() {
 
@@ -196,8 +205,8 @@ public class BaseClass {
 
 	}
 
-	
-	
+
+
 
 
 	public static void clickSaveImage(String search) throws AWTException, InterruptedException{
@@ -318,55 +327,109 @@ public class BaseClass {
 
 
 	}
-	
-	
+
+
 	public static String getSelectbyText(WebElement e){
-		
+
 		Select s = new Select(e);
-		
+
 		String text = s.getFirstSelectedOption().getText();
-	
-		
+
+
 		return text;
 	} 
-	
-	
+
+
 
 	public static String SelectbyValue(WebElement e, String value){
-		
+
 		Select s = new Select(e);
-		
+
 		s.selectByValue(value);
-	
-		
+
+
 		return value;
 	} 
 
 
-	
+
 
 	public static String SelectbyIndexs(WebElement e, String value){
-		
+
 		Select s = new Select(e);
 
 		int parseInt = Integer.parseInt(value);
 
 		s.selectByIndex(parseInt);
-	
-		
+
+
 		return value;
 	} 
-	
+
 	public static void takeScreenshot() throws IOException{
-		
+
 		TakesScreenshot ts = (TakesScreenshot)driver;
-		
+
 		File screenshotAs = ts.getScreenshotAs(OutputType.FILE);
-		
+
 		FileHandler.copy(screenshotAs, new File("F:\\Arun\\Screenshots"));
+
+
+	}
+	
+	
+
+
+	public static void write(String OrderNo, String name ) throws IOException{
 		
+		File f = new File("C:\\Users\\Arun\\Desktop\\Datadriven\\booking.xlsx");
+		
+		FileInputStream is = new FileInputStream(f);
+		
+		Workbook wb = new XSSFWorkbook(is);
+		
+		Sheet sheet = wb.getSheet("Search");
+			
+		Row row = sheet.getRow(0);
+		
+		Cell createCell = row.createCell(8);
+		
+		createCell.setCellValue("OrderNo");
+	          
+	  		int rowno = sheet.getPhysicalNumberOfRows();
+	  		
+	  		System.out.println(rowno);
+
+	  		for(int i=1; i<rowno; i++) {
+	  			
+	  			Row row1 = sheet.getRow(i);
+	  				
+	  			int lastCellNum = row1.getLastCellNum();
+	  			
+	  			System.out.println(lastCellNum);
+	  			
+	  			Cell cell = row1.getCell(0);
+	  			
+	  			String stringCellValue = cell.getStringCellValue();
+	  			
+	  			if(stringCellValue.contains(name)) {
+	  				
+	  				Cell createCell2 = row1.createCell(lastCellNum);
+	  				
+	  				createCell2.setCellValue(OrderNo);
+	  			}
+	  			
+	  			
+	  		}
+			
+		FileOutputStream os = new FileOutputStream(f);
+		
+		wb.write(os);
+		
+		//System.out.println("done");
 		
 	}
+
 
 
 	public static void quit() {

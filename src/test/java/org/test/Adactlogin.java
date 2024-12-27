@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -49,7 +50,7 @@ public class Adactlogin extends BaseClass {
 
 
 
-	@Test(dataProvider= "login", groups ="smoke" )
+	@Test(dataProvider= "login", groups ="smoke", enabled=false )
 	public void login(String user, String pass ) throws InterruptedException {
 
 		SoftAssert s = new SoftAssert();
@@ -89,7 +90,7 @@ public class Adactlogin extends BaseClass {
 
 	//SearchRoom
 
-	@Test (dataProvider = "Search", dataProviderClass=ReadXL.class, groups="sanity" )
+	@Test (dataProvider = "Search", dataProviderClass=ReadXL.class, groups="sanity", enabled=false )
 
 	public void search(String Location, String Hotels, String RoomType, String NoRooms, String Checkin, String Checkout, String Adult, String Child ) throws InterruptedException {
 
@@ -174,7 +175,7 @@ public class Adactlogin extends BaseClass {
 
 
      @Test(dataProvider = "booking", dataProviderClass=ReadXL.class, groups="smoke")
-	private void test2(String FirstName, String Lastname, String Address, String CardNo, String CardType, String Expirymonth, String ExpiryYear, String Cvv) throws InterruptedException {
+	private void test2(String FirstName, String Lastname, String Address, String CardNo, String CardType, String Expirymonth, String ExpiryYear, String Cvv) throws InterruptedException, IOException {
 
 		SoftAssert s = new SoftAssert();
 
@@ -277,10 +278,12 @@ public class Adactlogin extends BaseClass {
 
 		s.assertTrue(getCurrectURL().contains("BookingConfirm.php"), "Booking not confirmed");
 
-		printText(p.getOrder_no());
+		//printText(p.getOrder_no());
 
-
-
+		write(printText(p.getOrder_no()), FirstName);
+		
+		
+          
 		s.assertEquals(webStringlength(p.getOrder_no()), 10, "Order number not generated ");
 
 		s.assertAll();
@@ -291,8 +294,30 @@ public class Adactlogin extends BaseClass {
 	}
 
 
+  
+  @Test(enabled=false)  
+  public static void getText() throws IOException, InterruptedException {
+	  
+	  
+	  browser("Chrome");
+
+		POMclass   p = new POMclass();
 
 
+
+		getURL("https://www.greenstechnologys.com/selenium-placement-training-in-chennai.html");
+		
+		String text = driver.findElement(By.xpath("(//a[@title='Corporate Training'])[1]")).getText();
+		
+		System.out.println(text);
+		
+	//	write(text);
+		
+		sleep(3);
+		
+		quit();
+	  
+  }
 
 
 
